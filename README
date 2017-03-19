@@ -1,9 +1,14 @@
 test:
-read: ./herdsim r [n] [iter] < [inputfile]
+read: ./herdsim r [n] [iter] [inputfile]
 gen:  ./herdsim [n] [iter]
 
 a=bitarray of infected?
 b=bitarray of vaccinated?
 
+
+Done:
+read pop
+gen pop
+
 TODO:
-having trouble reading in shit
+everything else

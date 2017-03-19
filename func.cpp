@@ -23,8 +23,9 @@ void readpopulation(int *a, int *b, unsigned int n, char *filename) {
   // STYLE POINTSSSSSSSS
   std::ifstream file;
   file.open(filename);
-  a={0};
+  
   int current=0;
+
   for(int i = 0; i < n*n; i++){
     file >> current;
     printf("in:%d\n", current);
@@ -32,6 +33,7 @@ void readpopulation(int *a, int *b, unsigned int n, char *filename) {
       SetBit(a, i);
     }
   }
+
   file.close();
 }
 
