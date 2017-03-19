@@ -5,33 +5,47 @@
 #define BIRTH 2
 #define DEATH 3
 
-//Generate the life matrix any way you want. We would highly recommend that you print the generated
-//matrix into a file, so that you can share it with other teams for checking correctness.
+//Generate the matrix
 void genpopulation(int *a, int *b, unsigned int n) {
   // LET's do this sheeeettt
   srand(time(NULL));
+
+  //init infected
   for (int i = 0; i < n*n; i++) {
-     if(rand() & 1){
+     if(((rand() % 10000)/10000.) < INFECTION_SEED_RATIO){
         SetBit(a,i);
+     }
+  }
+
+  //init unvaccinated
+  for (int i = 0; i < n*n; i++) {
+     if(((rand() % 10000)/10000.) > VAC_RATE){
+        SetBit(b,i);
      }
   }
 
 }
 
-//Read the life matrix from a file
+//Read the matrix from a file
 void readpopulation(int *a, int *b, unsigned int n, char *filename) {
   // STYLE POINTSSSSSSSS
   std::ifstream file;
   file.open(filename);
-  
+
+  srand(time(NULL));
   int current=0;
 
   for(int i = 0; i < n*n; i++){
     file >> current;
-    printf("in:%d\n", current);
     if(current==1){
       SetBit(a, i);
     }
+  }
+  //init vaccinations
+  for (int i = 0; i < n*n; i++) {
+     if(((rand() % 10000)/10000.) > VAC_RATE){
+        SetBit(b,i);
+     }
   }
 
   file.close();

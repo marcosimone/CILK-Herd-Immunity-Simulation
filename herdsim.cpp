@@ -9,8 +9,8 @@ int main(int argc, char **argv)
 {
 	unsigned int n;
 	unsigned int iter;
-	int *a; //infected?
-  int *b; //vaccinated?
+	int *a; //infected: 0=not infected
+  int *b; //vaccinated: 0=vaccinated
   int arrsize;
   long t1, t2;
 	// Size calculation
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     b = (int *)malloc(size_in_bytes);
     arrsize=size_in_bytes/sizeof(int);
 
-    printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
+    //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
 			exit(-1);
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 			exit(-1);
 		}
 
-    printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
+    //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
 		genpopulation(a,b,n);
 
 		int infected = countinfected(a,n, arrsize);

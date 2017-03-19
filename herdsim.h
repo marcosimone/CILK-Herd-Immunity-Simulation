@@ -14,6 +14,10 @@
 #define TestBit(A,k)    ( A[(k/(CHAR_BIT*sizeof(int)))] &   (1 << (k%(CHAR_BIT*sizeof(int)))) )
 #define ClearBit(A,k)   ( A[(k/(CHAR_BIT*sizeof(int)))] &= ~(1 << (k%(CHAR_BIT*sizeof(int)))) )
 
+#define VAC_RATE .9
+#define INFECTION_SEED 1
+#define INFECTION_SEED_RATIO .01
+
 void readpopulation(int *a, int *b, unsigned int n, char *filename);
 void genpopulation(int *a, int *b, unsigned int n);
 void herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *livecount);
