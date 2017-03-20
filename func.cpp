@@ -107,8 +107,10 @@ inline void liveOrDie(int *a, int *a_tmp, int *b, unsigned int n, int index){
 
 }
 
-void debug(int *a, int *a_tmp, int *b, unsigned int n){
-
+void debug(int *a, int *a_tmp, int *b, unsigned int n, int arrsize){
+  for (size_t i = 0; i < arrsize; i++) {
+    printf("%d \n", a[i]);
+  }
 }
 int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
 
@@ -130,8 +132,9 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
   int *a_tmp;
   a_tmp = (int *)malloc(((n*n + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT);
   int cnt = 0;
-  debug(a,a_tmp,b,n);//--------------------------------------------------------------------------------------------
+
   for(int i = 0; i < iter; i++){
+    //debug(a,a_tmp,b,n, arrsize);//--------------------------------------------------------------------------------------------
     // Phase 1: Check neighbors of each cell, update cells in temp array
     for(int j = 0; j < n*n; j++){
       liveOrDie(a, a_tmp, b, n, j);
@@ -140,8 +143,14 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     a=(int *)((uintptr_t)a_tmp^(uintptr_t)a);
     a_tmp=(int *)((uintptr_t)a_tmp^(uintptr_t)a);
     a=(int *)((uintptr_t)a^(uintptr_t)a_tmp);
+
+    // Phase 3: display
+    if(INTERACTIVE){
+      system("clear");
+    }
     printf("countlive: %d iteration %d\n", countinfected(a ,n, arrsize), i);
-    // Phase 3: Call infectedcount every 1/10(iter) times if DEBUG == 1
+
+
     for(int i=0; i<n*n; i++){
         if(TestBit(a,i)){
           printf("%s1 ", RED);
@@ -154,6 +163,9 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     }
     printf("\n");
     printf("%s", WHT);
+    if(INTERACTIVE){
+      getchar();
+    }
     /*
 
     if(DEBUG == 1){

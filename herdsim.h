@@ -12,7 +12,7 @@
 #include "example_util_gettime.h"
 
 #define SetBit(A,k)     ( A[(k/(CHAR_BIT*sizeof(int)))] |=  (1 << (k%(CHAR_BIT*sizeof(int)))) )
-#define TestBit(A,k)    (( A[(k/(CHAR_BIT*sizeof(int)))] &   (1 << (k%(CHAR_BIT*sizeof(int)))) ) > 0)
+#define TestBit(A,k)    (( A[(k/(CHAR_BIT*sizeof(int)))] &   (1 << (k%(CHAR_BIT*sizeof(int)))) ) != 0)
 #define ClearBit(A,k)   ( A[(k/(CHAR_BIT*sizeof(int)))] &= ~(1 << (k%(CHAR_BIT*sizeof(int)))) )
 
 #define VAC_RATE .9
@@ -20,6 +20,7 @@
 #define INFECTION_SEED_RATIO .01
 #define VAC_INFECTION_CHANCE .1
 #define UNVAC_INFECTION_CHANCE .9
+#define INTERACTIVE 0
 
 #define RED  "\x1B[31m"
 #define GRN  "\x1B[32m"
