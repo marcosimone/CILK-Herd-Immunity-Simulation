@@ -28,7 +28,7 @@ void genpopulation(int *a, int *b, unsigned int n) {
 
 //Read the matrix from a file
 void readpopulation(int *a, int *b, unsigned int n, char *filename) {
-  // STYLE POINTSSSSSSSS
+  // STYLE POINTSSSSSSSS //og comments yo
   std::ifstream file;
   file.open(filename);
 
@@ -74,7 +74,7 @@ inline void liveOrDie(int *a, int *a_tmp, int *b, unsigned int n, int index){
 
   int currentVal = TestBit(a, index);
   if(currentVal == INFECTED){
-    //printf("infected: %d\n", index);
+
     SetBit(a_tmp, index);
     return;
   }else{
@@ -113,7 +113,7 @@ void debug(int *a, int *a_tmp, int *b, unsigned int n, int arrsize){
   }
 }
 int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
-
+//doesnt get much more dope than this tbh
 //print initail
   printf("----------------init----------------\n");
   for(int i=0; i<n*n; i++){
@@ -125,7 +125,7 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
       if(i%n==n-1){
         printf("\n");
       }
-      printf("%s", WHT);
+      printf("%s", NRM);
   }
   printf("-------------------------------------\n");
 
@@ -148,33 +148,29 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     if(INTERACTIVE){
       system("clear");
     }
-    printf("countlive: %d iteration %d\n", countinfected(a ,n, arrsize), i);
+    printf("infected: %d iteration %d\n", countinfected(a ,n, arrsize), i);
 
 
     for(int i=0; i<n*n; i++){
         if(TestBit(a,i)){
           printf("%s1 ", RED);
         }else{
-          printf("%s0 ", GRN);
+          if(TestBit(b,i)){
+            printf("%s0 ", GRN);
+          }else{
+            printf("%s0 ", DRKGRN);
+          }
         }
         if(i%n==n-1){
           printf("\n");
         }
     }
     printf("\n");
-    printf("%s", WHT);
+    printf("%s", NRM);
     if(INTERACTIVE){
       getchar();
     }
-    /*
 
-    if(DEBUG == 1){
-      if((i+1) % (iter/10) == 0){
-        infectedcount[cnt] = countinfected(a, n);
-        cnt++;
-      }
-    }
-    */
   }
   return a;
 

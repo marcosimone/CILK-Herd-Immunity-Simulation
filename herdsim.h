@@ -20,11 +20,14 @@
 #define INFECTION_SEED_RATIO .01
 #define VAC_INFECTION_CHANCE .1
 #define UNVAC_INFECTION_CHANCE .9
-#define INTERACTIVE 0
+#define DISEASE_LIFE 8
+#define INTERACTIVE 1
 
 #define RED  "\x1B[31m"
+#define LGTRED  "\x1B[38;2;255;127;127m"
 #define GRN  "\x1B[32m"
-#define WHT  "\x1B[37m"
+#define DRKGRN  "\x1B[38;2;10;124;64m"
+#define NRM  "\x1B[0m"
 
 void readpopulation(int *a, int *b, unsigned int n, char *filename);
 void genpopulation(int *a, int *b, unsigned int n);
