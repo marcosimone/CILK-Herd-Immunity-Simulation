@@ -24,12 +24,12 @@
 #define INTERACTIVE 1
 
 #define RED  "\x1B[31m"
-#define LGTRED  "\x1B[38;2;255;127;127m"
+#define DRKRED  "\x1B[38;2;127;27;27m"
 #define GRN  "\x1B[32m"
 #define DRKGRN  "\x1B[38;2;10;124;64m"
 #define NRM  "\x1B[0m"
 
-void readpopulation(int *a, int *b, unsigned int n, char *filename);
-void genpopulation(int *a, int *b, unsigned int n);
-int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *livecount, int arrsize);
+void readpopulation(int *a, int *b, int *c, unsigned int n, char *filename);
+void genpopulation(int *a, int *b, int *c, unsigned int n);
+int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *livecount, int arrsize);
 int countinfected(int *a, unsigned int n, int arrsize);

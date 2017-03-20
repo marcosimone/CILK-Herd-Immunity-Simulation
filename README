@@ -6,9 +6,6 @@ a=bitarray of infected?
 b=bitarray of vaccinated?
 
 
-Done:
-read pop
-gen pop
-
 TODO:
-everything else
+give life to diseases
+parallelize it

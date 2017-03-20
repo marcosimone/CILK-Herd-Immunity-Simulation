@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 	unsigned int iter;
 	int *a; //infected: 0=not infected
   int *b; //vaccinated: 0=vaccinated
+  int *c; //disease life
   int arrsize;
   long t1, t2;
 	// Size calculation
@@ -44,7 +45,7 @@ int main(int argc, char **argv)
 			exit(-1);
 		}
 
-		readpopulation(a,b,n, argv[4]);
+		readpopulation(a,b,c,n, argv[4]);
 	}
 	// Generate random data
 	else
@@ -61,7 +62,7 @@ int main(int argc, char **argv)
 		}
 
     //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
-		genpopulation(a,b,n);
+		genpopulation(a,b,c,n);
 
 		int infected = countinfected(a,n, arrsize);
 	}
@@ -78,7 +79,7 @@ int main(int argc, char **argv)
 
 
 	t1 = example_get_time();
-  a=herdsim(a,b,n,iter,infectedcount, arrsize);
+  a=herdsim(a,b,c,n,iter,infectedcount, arrsize);
   t2 = example_get_time();
   cout << "Standard library function time for life: " << t2 - t1 << endl;
 

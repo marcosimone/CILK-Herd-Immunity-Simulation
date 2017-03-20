@@ -6,7 +6,7 @@
 #define VACCINATED 0
 
 //Generate the matrix
-void genpopulation(int *a, int *b, unsigned int n) {
+void genpopulation(int *a, int *b, int *c, unsigned int n) {
   // LET's do this sheeeettt
   srand(time(NULL));
 
@@ -27,7 +27,7 @@ void genpopulation(int *a, int *b, unsigned int n) {
 }
 
 //Read the matrix from a file
-void readpopulation(int *a, int *b, unsigned int n, char *filename) {
+void readpopulation(int *a, int *b, int *c, unsigned int n, char *filename) {
   // STYLE POINTSSSSSSSS //og comments yo
   std::ifstream file;
   file.open(filename);
@@ -70,7 +70,7 @@ inline int nborBot(int *a, int x, int b, int n){
   return TestBit(a, nborindex);//a[nborindex];
 } // Neighbors in bottom row
 
-inline void liveOrDie(int *a, int *a_tmp, int *b, unsigned int n, int index){
+inline void liveOrDie(int *a, int *a_tmp, int *b, int *c, unsigned int n, int index){
 
   int currentVal = TestBit(a, index);
   if(currentVal == INFECTED){
@@ -107,12 +107,12 @@ inline void liveOrDie(int *a, int *a_tmp, int *b, unsigned int n, int index){
 
 }
 
-void debug(int *a, int *a_tmp, int *b, unsigned int n, int arrsize){
+void debug(int *a, int *a_tmp, int *b, int *c, unsigned int n, int arrsize){
   for (size_t i = 0; i < arrsize; i++) {
     printf("%d \n", a[i]);
   }
 }
-int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
+int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
 //doesnt get much more dope than this tbh
 //print initail
   printf("----------------init----------------\n");
@@ -137,7 +137,7 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     //debug(a,a_tmp,b,n, arrsize);//--------------------------------------------------------------------------------------------
     // Phase 1: Check neighbors of each cell, update cells in temp array
     for(int j = 0; j < n*n; j++){
-      liveOrDie(a, a_tmp, b, n, j);
+      liveOrDie(a, a_tmp, b, c, n, j);
     }
     // Phase 2: swap tmp and normal
     a=(int *)((uintptr_t)a_tmp^(uintptr_t)a);
