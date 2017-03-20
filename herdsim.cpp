@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
 
 	//t1 = example_get_time();
-  //herdsim(a,n,iter,infectedcount);
+  a=herdsim(a,b,n,iter,infectedcount, arrsize);
   //t2 = example_get_time();
   //cout << "Standard library function time for life: " << t2 - t1 << endl;
 

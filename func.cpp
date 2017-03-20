@@ -2,8 +2,8 @@
 #include <time.h>
 #include <fstream>
 
-#define BIRTH 2
-#define DEATH 3
+#define INFECTED 1
+#define VACCINATED 0
 
 //Generate the matrix
 void genpopulation(int *a, int *b, unsigned int n) {
@@ -34,7 +34,7 @@ void readpopulation(int *a, int *b, unsigned int n, char *filename) {
 
   srand(time(NULL));
   int current=0;
-
+ //init infections
   for(int i = 0; i < n*n; i++){
     file >> current;
     if(current==1){
@@ -45,6 +45,7 @@ void readpopulation(int *a, int *b, unsigned int n, char *filename) {
   for (int i = 0; i < n*n; i++) {
      if(((rand() % 10000)/10000.) > VAC_RATE){
         SetBit(b,i);
+
      }
   }
 
@@ -55,76 +56,96 @@ void readpopulation(int *a, int *b, unsigned int n, char *filename) {
 // b=-1 -> right, b=0 -> middle, b=1 ->left
 inline int nborRow(int *a, int x, int b, int n){
 	int nborindex = (x/n * n) + (x % n +(n-b)) % n;
-	int nborvalue = a[nborindex];
-  if(nborvalue == 1 || nborvalue == DEATH){
-    return 1;
-  }else if(nborvalue == 0 || nborvalue == BIRTH){
-    return 0;
-  }
+	return TestBit(a, nborindex);//a[nborindex];
+
 } // Neighbors in current row
 
 inline int nborTop(int *a, int x, int b, int n){
 	int nborindex = (((x/n * n) + n*n - n) % (n*n)) + (x % n +(n-b)) % n;
-  int nborvalue = a[nborindex];
-  if(nborvalue == 1 || nborvalue == DEATH){
-    return 1;
-  }else if(nborvalue == 0 || nborvalue == BIRTH){
-    return 0;
-  }
+  return TestBit(a, nborindex);//a[nborindex];
 } // Neighbors in top row
 
 inline int nborBot(int *a, int x, int b, int n){
 	int nborindex = (((x/n * n) + n) % (n*n)) + (x % n +(n-b)) % n;
-  int nborvalue = a[nborindex];
-  if(nborvalue == 1 || nborvalue == DEATH){
-    return 1;
-  }else if(nborvalue == 0 || nborvalue == BIRTH){
-    return 0;
-  }
+  return TestBit(a, nborindex);//a[nborindex];
 } // Neighbors in bottom row
 
-inline void liveOrDie(int *a, unsigned int n, int index){
-  int nborcount = 0;
-  nborcount += nborTop(a, index, -1, n);
-  nborcount += nborTop(a, index, 0, n);
-  nborcount += nborTop(a, index, 1, n);
-  nborcount += nborRow(a, index, -1, n);
-  nborcount += nborRow(a, index, 1, n);
-  nborcount += nborBot(a, index, -1, n);
-  nborcount += nborBot(a, index, 0, n);
-  nborcount += nborBot(a, index, 1, n);
-  int currentVal = a[index];
-  if(currentVal == 0){
-    if(nborcount == 3){
-      a[index] = BIRTH;
-    }
-  }else if(currentVal == 1){
-    if(!(nborcount == 2 || nborcount == 3)){
-      a[index] = DEATH;
+inline void liveOrDie(int *a, int *a_tmp, int *b, unsigned int n, int index){
+
+  int currentVal = TestBit(a, index);
+  if(currentVal == INFECTED){
+    //printf("infected: %d\n", index);
+    SetBit(a_tmp, index);
+    return;
+  }else{
+    int nborcount = 0;
+    nborcount += nborTop(a, index, -1, n);
+    nborcount += nborTop(a, index, 0, n);
+    nborcount += nborTop(a, index, 1, n);
+    nborcount += nborRow(a, index, -1, n);
+    nborcount += nborRow(a, index, 1, n);
+    nborcount += nborBot(a, index, -1, n);
+    nborcount += nborBot(a, index, 0, n);
+    nborcount += nborBot(a, index, 1, n);
+
+    if(TestBit(b, index) == VACCINATED){
+      for(int i = 0; i<nborcount; i++){
+        if(((rand() % 10000)/10000.) < VAC_INFECTION_CHANCE){
+           SetBit(a_tmp,index);
+        }
+      }
+
+    }else{
+      for(int i = 0; i<nborcount; i++){
+        if(((rand() % 10000)/10000.) < pow(UNVAC_INFECTION_CHANCE, nborcount)){
+           SetBit(a_tmp,index);
+        }
+      }
+
     }
   }
+
 }
 
+void debug(int *a, int *a_tmp, int *b, unsigned int n){
 
-void herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcount) {
+}
+int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
 
-  int cnt = 0;
-  for(int i = 0; i < iter; i++){
-    // Phase 1: Check neighbors of each cell, update cells to be b or d
-    cilk_for(int j = 0; j < n*n; j++){
-      liveOrDie(a, n, j);
-    }
-    // Phase 2: Go through array, replace b's with 1's, d's with 0's
-    cilk_for(int j = 0; j < n*n; j++){
-      if(a[j] == BIRTH){
-        a[j] = 1;
-      }else if(a[j] == DEATH){
-        a[j] = 0;
+//print initail
+  printf("----------------init----------------\n");
+  for(int i=0; i<n*n; i++){
+    printf("%d ", TestBit(a, i));
+      if(i%n==n-1){
+        printf("\n");
       }
+  }
+  printf("-------------------------------------\n");
+
+  int *a_tmp;
+  a_tmp = (int *)malloc(((n*n + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT);
+  int cnt = 0;
+  debug(a,a_tmp,b,n);//--------------------------------------------------------------------------------------------
+  for(int i = 0; i < iter; i++){
+    // Phase 1: Check neighbors of each cell, update cells in temp array
+    for(int j = 0; j < n*n; j++){
+      liveOrDie(a, a_tmp, b, n, j);
     }
-    // printf("countlive: %d iteration %d\n", countlive(a ,n), i);
+    // Phase 2: swap tmp and normal
+    a=(int *)((uintptr_t)a_tmp^(uintptr_t)a);
+    a_tmp=(int *)((uintptr_t)a_tmp^(uintptr_t)a);
+    a=(int *)((uintptr_t)a^(uintptr_t)a_tmp);
+    printf("countlive: %d iteration %d\n", countinfected(a ,n, arrsize), i);
     // Phase 3: Call infectedcount every 1/10(iter) times if DEBUG == 1
+    for(int i=0; i<n*n; i++){
+        printf("%d ", TestBit(a, i));
+        if(i%n==n-1){
+          printf("\n");
+        }
+    }
+    printf("\n");
     /*
+
     if(DEBUG == 1){
       if((i+1) % (iter/10) == 0){
         infectedcount[cnt] = countinfected(a, n);
@@ -133,5 +154,6 @@ void herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     }
     */
   }
+  return a;
 
 }
