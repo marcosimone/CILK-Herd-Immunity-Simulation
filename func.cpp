@@ -97,7 +97,7 @@ inline void liveOrDie(int *a, int *a_tmp, int *b, int *c, unsigned int n, int in
 
     }else{
       for(int i = 0; i<nborcount; i++){
-        if(((rand() % 10000)/10000.) < pow(UNVAC_INFECTION_CHANCE, nborcount)){
+        if(((rand() % 10000)/10000.) < UNVAC_INFECTION_CHANCE){
            SetBit(a_tmp,index);
         }
       }
@@ -120,13 +120,18 @@ int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *inf
       if(TestBit(a,i)){
         printf("%s1 ", RED);
       }else{
-        printf("%s0 ", GRN);
+        if(TestBit(b,i)){
+          printf("%s0 ", WHT);
+        }else{
+          printf("%s0 ", GRN);
+        }
       }
       if(i%n==n-1){
         printf("\n");
       }
-      printf("%s", NRM);
   }
+  printf("\n");
+  printf("%s", NRM);
   printf("-------------------------------------\n");
 
   int *a_tmp;
@@ -156,9 +161,9 @@ int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *inf
           printf("%s1 ", RED);
         }else{
           if(TestBit(b,i)){
-            printf("%s0 ", GRN);
+            printf("%s0 ", WHT);
           }else{
-            printf("%s0 ", DRKGRN);
+            printf("%s0 ", GRN);
           }
         }
         if(i%n==n-1){

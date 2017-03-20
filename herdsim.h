@@ -27,6 +27,7 @@
 #define DRKRED  "\x1B[38;2;127;27;27m"
 #define GRN  "\x1B[32m"
 #define DRKGRN  "\x1B[38;2;10;124;64m"
+#define WHT  "\x1B[37m"
 #define NRM  "\x1B[0m"
 
 void readpopulation(int *a, int *b, int *c, unsigned int n, char *filename);
