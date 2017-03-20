@@ -115,10 +115,15 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
 //print initail
   printf("----------------init----------------\n");
   for(int i=0; i<n*n; i++){
-    printf("%d ", TestBit(a, i));
+      if(TestBit(a,i)){
+        printf("%s1 ", RED);
+      }else{
+        printf("%s0 ", GRN);
+      }
       if(i%n==n-1){
         printf("\n");
       }
+      printf("%s", WHT);
   }
   printf("-------------------------------------\n");
 
@@ -138,12 +143,17 @@ int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *infectedcou
     printf("countlive: %d iteration %d\n", countinfected(a ,n, arrsize), i);
     // Phase 3: Call infectedcount every 1/10(iter) times if DEBUG == 1
     for(int i=0; i<n*n; i++){
-        printf("%d ", TestBit(a, i));
+        if(TestBit(a,i)){
+          printf("%s1 ", RED);
+        }else{
+          printf("%s0 ", GRN);
+        }
         if(i%n==n-1){
           printf("\n");
         }
     }
     printf("\n");
+    printf("%s", WHT);
     /*
 
     if(DEBUG == 1){

@@ -21,6 +21,10 @@
 #define VAC_INFECTION_CHANCE .1
 #define UNVAC_INFECTION_CHANCE .9
 
+#define RED  "\x1B[31m"
+#define GRN  "\x1B[32m"
+#define WHT  "\x1B[37m"
+
 void readpopulation(int *a, int *b, unsigned int n, char *filename);
 void genpopulation(int *a, int *b, unsigned int n);
 int* herdsim(int *a, int *b, unsigned int n, unsigned int iter, int *livecount, int arrsize);
