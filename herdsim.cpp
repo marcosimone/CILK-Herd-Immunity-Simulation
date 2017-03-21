@@ -39,22 +39,15 @@ int main(int argc, char **argv)
 		int size_in_bytes_dttl=((n*n*4 + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT;
 		a = (int *)malloc(size_in_bytes);
     b = (int *)malloc(size_in_bytes);
-		c = (int *)malloc(size_in_bytes_dttl); // Marco says it wasn't not that simple, but apparently now it's that simple
+		c = (int *)malloc(size_in_bytes_dttl); // Marco says it wasn't that simple, but apparently now it's that simple
     arrsize=size_in_bytes/sizeof(int);
 		arrsize_dttl=size_in_bytes_dttl/sizeof(int);
-		//memset(a, 0, size_in_bytes);
-		//memset(b, 0, size_in_bytes);
-		//memset(c, 0, size_in_bytes_dttl);
 
-    //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
 			exit(-1);
 		}
-
-		readpopulation(a,b,c,n, argv[4]);
-
-		
+		readpopulation(a,b,c,n, argv[4]); 
 	}
 	// Generate random data
 	else
@@ -71,39 +64,18 @@ int main(int argc, char **argv)
 			printf("Malloc failed .. Exiting\n");
 			exit(-1);
 		}
-
-    //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
 		genpopulation(a,b,c,n);
 
 		int infected = countinfected(a,n, arrsize);
 	}
-/*
-	//Debug array
-	infectedcount = (int *)malloc(sizeof(int)*n);
-
-	//Initialize infectedcount array
-	#if DEBUG == 1
-		for(int i = 0; i < 10; i++)
-			infectedcount[i] = 0;
-	#endif
-*/
-
 
 	t1 = example_get_time();
   a=herdsim(a,b,c,n,iter,infectedcount, arrsize);
   t2 = example_get_time();
-  cout << "Standard library function time for life: " << t2 - t1 << endl;
-
-/*
-	// Print the infectedcount array
-	#if DEBUG == 1
-
-		for(int i = 0; i < 10; i++)
-			printf("%d ",infectedcount[i]);
-		printf("\n");
-	#endif
-*/
-  printf("infected: %d\n", countinfected(a, n, arrsize));
+	//printf("infected: %d\n", countinfected(a ,n, arrsize));
+	//cout << "Standard library function time for life: " << t2 - t1 << endl;
+	printf("%d: %d\n", n, t2-t1);
+  //printf("infected: %d\n", countinfected(a, n, arrsize));
 	return 0;
 
 }

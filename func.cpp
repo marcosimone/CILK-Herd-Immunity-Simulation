@@ -87,7 +87,6 @@ inline int nborBot(int *a, int x, int b, int n){
 } // Neighbors in bottom row
 
 inline void liveOrDie(int *a, int *a_tmp, int *b, int *c, unsigned int n, int index){
-
   int currentVal = TestBit(a, index);
   if(currentVal == INFECTED && GetBitsDttl(c, index)>0 ){
     //infect others
@@ -130,34 +129,6 @@ inline void liveOrDie(int *a, int *a_tmp, int *b, int *c, unsigned int n, int in
     return;
   }else{
     return;
-  /*
-    int nborcount = 0;
-    nborcount += nborTop(a, index, -1, n);
-    nborcount += nborTop(a, index, 0, n);
-    nborcount += nborTop(a, index, 1, n);
-    nborcount += nborRow(a, index, -1, n);
-    nborcount += nborRow(a, index, 1, n);
-    nborcount += nborBot(a, index, -1, n);
-    nborcount += nborBot(a, index, 0, n);
-    nborcount += nborBot(a, index, 1, n);
-
-    if(TestBit(b, index) == VACCINATED){
-      for(int i = 0; i<nborcount; i++){
-        if(((rand() % 10000)/10000.) < VAC_INFECTION_CHANCE){
-           SetBit(a_tmp,index);
-           SetBitsDttl(c, index, GetBitsDttl(c, ))
-        }
-      }
-
-    }else{
-      for(int i = 0; i<nborcount; i++){
-        if(((rand() % 10000)/10000.) < UNVAC_INFECTION_CHANCE){
-           SetBit(a_tmp,index);
-        }
-      }
-
-    }
-  */
   }
 
 }
@@ -194,11 +165,10 @@ void display(int *a, int *b, int *c, unsigned int n, int arrsize){
 int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *infectedcount, int arrsize) {
 //doesnt get much more dope than this tbh
 //print initail
-  printf("----------------init----------------\n");
-  display(a,b,c,n, arrsize);
-
-  printf("-------------------------------------\n");
   if(INTERACTIVE){
+    printf("----------------init----------------\n");
+    display(a,b,c,n, arrsize);
+    printf("-------------------------------------\n");
     getchar();
   }
   int *a_tmp;
@@ -208,7 +178,7 @@ int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *inf
   for(int i = 0; i < iter; i++){
 
     // Phase 1: Check neighbors of each cell, update cells in temp array
-    for(int j = 0; j < n*n; j++){
+    cilk_for(int j = 0; j < n*n; j++){
       liveOrDie(a, a_tmp, b, c, n, j);
     }
     // Phase 2: swap tmp and normal
@@ -219,11 +189,8 @@ int* herdsim(int *a, int *b, int *c, unsigned int n, unsigned int iter, int *inf
     // Phase 3: display
     if(INTERACTIVE){
       system("clear");
-    }
-    printf("infected: %d iteration %d\n", countinfected(a ,n, arrsize), i);
-    display(a,b,c,n, arrsize);
-
-    if(INTERACTIVE){
+      printf("infected: %d iteration %d\n", countinfected(a ,n, arrsize), i);
+      display(a,b,c,n, arrsize);
       getchar();
     }
 

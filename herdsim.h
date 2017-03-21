@@ -45,7 +45,7 @@
 #define VAC_INFECTION_CHANCE .1
 #define UNVAC_INFECTION_CHANCE .9
 #define DISEASE_TTL 8
-#define INTERACTIVE 1
+#define INTERACTIVE 0
 
 #define RED  "\x1B[31m"
 #define DRKRED  "\x1B[38;2;127;27;27m"
