@@ -13,7 +13,8 @@ int main(int argc, char **argv)
   int *b; //vaccinated: 0=vaccinated
   int *c; //disease life
   int arrsize;
-  long t1, t2;
+	int arrsize_dttl;
+	long t1, t2;
 	// Size calculation
 
 	// Initialize life matrix through either reading from standard input or initializing as required.
@@ -35,9 +36,15 @@ int main(int argc, char **argv)
     int size_in_bytes=roundedupbits/CHAR_BIT;
     */
     int size_in_bytes=((n*n + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT;
+		int size_in_bytes_dttl=((n*n*4 + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT;
 		a = (int *)malloc(size_in_bytes);
     b = (int *)malloc(size_in_bytes);
+		c = (int *)malloc(size_in_bytes_dttl); // Marco says it wasn't not that simple, but apparently now it's that simple
     arrsize=size_in_bytes/sizeof(int);
+		arrsize_dttl=size_in_bytes_dttl/sizeof(int);
+		//memset(a, 0, size_in_bytes);
+		//memset(b, 0, size_in_bytes);
+		//memset(c, 0, size_in_bytes_dttl);
 
     //printf("size of array(ints): %d\nsize of array(bytes): %d\n", arrsize, size_in_bytes);
 		if(a == NULL) {
@@ -46,6 +53,8 @@ int main(int argc, char **argv)
 		}
 
 		readpopulation(a,b,c,n, argv[4]);
+
+		
 	}
 	// Generate random data
 	else
@@ -53,8 +62,10 @@ int main(int argc, char **argv)
 		n = (unsigned int)atoi(argv[1]);
 		iter = (unsigned int)atoi(argv[2]);
     int size_in_bytes=((n*n + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT;
+		int size_in_bytes_dttl=((n*n*4 + sizeof(int)*CHAR_BIT - 1) & ~(sizeof(int)*CHAR_BIT - 1))/CHAR_BIT;
 		a = (int *)malloc(size_in_bytes);
     b = (int *)malloc(size_in_bytes);
+		c = (int *)malloc(size_in_bytes_dttl);
     arrsize=size_in_bytes/sizeof(int);
 		if(a == NULL) {
 			printf("Malloc failed .. Exiting\n");
